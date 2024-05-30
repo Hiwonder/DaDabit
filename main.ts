@@ -13,16 +13,16 @@ namespace dadabit {
     }
 
     export enum iicPort {
-        //% block="port 4"
+        //% block="4"
         port4 = 0x04,
-        //% block="port 5"
+        //% block="5"
         port5 = 0x05,
-        //% block="port 6"
+        //% block="6"
         port6 = 0x06
     }
 
     export enum ioPort1 {
-        //% block="port 1"
+        //% block="1"
         port1 = 0x01
     }
 
@@ -101,7 +101,7 @@ namespace dadabit {
     /**
      * Temperature and humidity sensor initialization, please execute at boot time
     */
-    //% weight=94 blockId=temphumidity_init block="Initialize temperature and humidity sensor %port"
+    //% weight=94 blockId=temphumidity_init block="Initialize temperature and humidity sensor at port %port"
     //% subcategory=Init
     export function temphumidity_init(port: iicPort) {
         tempHumiPort = port;
@@ -110,7 +110,7 @@ namespace dadabit {
     /**
      * Wifi module initialization, please execute at boot time
     */
-    //% weight=92 blockId=wifi_init block="Initialize wifi module %port"
+    //% weight=92 blockId=wifi_init block="Initialize wifi module at port %port"
     //% subcategory=Init
     export function wifi_init(port: iicPort) {
         wifiPort = port;
@@ -135,6 +135,14 @@ namespace dadabit {
         initRGBLight();
     }
 
+    /**
+     * RGB module initialization, please execute at boot time
+    */
+    //% weight=82 blockId=linefollower_init block="Initialize linefollower sensor at port %port"
+    //% subcategory=Init
+    export function linefollower_init(port: iicPort) {
+
+    }
     /**
     * Get the handle command.
     */
@@ -222,7 +230,7 @@ namespace dadabit {
     * Set the angle of lego 270° servo 1 to 6, range of -135~135 degree
     * @param index servo number in 1-6. eg: 1
     */
-    //% weight=82 blockId=setLego270Servo block="Set Lego 270° servo|index %index|angle %angle|duration %duration"
+    //% weight=81 blockId=setLego270Servo block="Set Lego 270° servo|index %index|angle %angle|duration %duration"
     //% angle.min=-135 angle.max=135
     //% subcategory=Control
     export function setLego270Servo(index: number, angle: number, duration: number) {
@@ -564,7 +572,7 @@ namespace dadabit {
     /**
  * set wifi module connect to router, only valid in STA mode
  * @param ssid is a string, eg: "iot"
- * @param password is a string, eg: "123456"
+ * @param password is a string, eg: "12345678"
 */
     //% weight=40 blockId=setWifiConnectToRouter block="Set wifi module connect to router, wifi name %ssid and password %password"
     //% subcategory=Communication
