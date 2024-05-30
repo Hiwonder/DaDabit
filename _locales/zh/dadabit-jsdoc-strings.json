@@ -1,0 +1,13 @@
+{
+	"dadabit.dadabit_init":"dadabit板初始化，请在开机时执行",
+	"dadabit.setServo":"设置1到2号舵机角度，角度范围0~180",
+	"dadabit.setBusServo":"设置1到2号总线舵机角度，角度范围0~240",
+	"dadabit.setMotorSpeed":"设置马达1和马达2的速度，速度范围-100到100，可控制坦克车行进和转弯",
+	"dadabit.Ultrasonic":"获取超声波检测到障碍物的距离",
+	"dadabit.getSoundVolume":"获取声音传感器检测到的音量等级，范围0到255",
+	"dadabit.readLineFollowerStatus":"获取巡线传感器的状态",
+	"dadabit.setPixelRGB":"设置彩灯颜色，设置完成后请执行显示彩灯操作",
+	"dadabit.setPixelRGBArgs":"设置彩灯颜色，填入编号即可设置，1.红色 2.橙色 3.黄色 4.绿色 5.蓝色 6.靛蓝 7.紫罗兰 8.紫色 9.白色,设置完成后请执行显示彩灯操作",
+	"dadabit.showLight":"显示彩灯，和设置彩灯颜色配合使用，设置完彩灯颜色后必须执行显示彩灯完成显示",
+	"dadabit.clearLight":"清除彩灯颜色，关闭彩灯"
+}

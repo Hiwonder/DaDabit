@@ -1,0 +1,22 @@
+{
+    "name": "dadabit",
+    "version": "0.0.1",
+    "description": "Extension for Hiwonder DaDabit",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+        "WonderCam": "github:Hiwonder/WonderCam"
+    },
+    "files": [
+        "README.md",
+        "main.ts",
+        "RGBLight.ts",
+        "sendbuffer.asm",
+        "_locales/zh/dadabit-strings.json",
+        "_locales/zh/dadabit-jsdoc-strings.json"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true
+}
