@@ -27,7 +27,7 @@ namespace dadabit {
     }
 
     export enum ioPort2 {
-        //% block="port 2"
+        //% block="2"
         port2 = 0x02
     }
 
@@ -128,7 +128,7 @@ namespace dadabit {
     /**
      * RGB module initialization, please execute at boot time
     */
-    //% weight=83 blockId=rgb_init block="Initialize RGB module %port"
+    //% weight=83 blockId=rgb_init block="Initialize RGB module at port %port"
     //% subcategory=Init
     export function rgb_init(port: ioPort2) {
         rgbPort = port;
