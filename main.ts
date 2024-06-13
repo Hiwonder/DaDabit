@@ -104,7 +104,7 @@ namespace dadabit {
         if (!boardRgbLight) {
             boardRgbLight = RGBLight.create(DigitalPin.P15, 2, RGBPixelMode.RGB);
         }
-        clearLight();
+        clearBoardLight();
     }
 
 
