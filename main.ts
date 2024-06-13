@@ -64,6 +64,7 @@ namespace dadabit {
     }
 
     let rgbLight: RGBLight.LHRGBLight;
+    let boardRgbLight: RGBLight.LHRGBLight;
 
     let handleCmd: string = "";
     let batVoltage: number = 0;
@@ -89,6 +90,7 @@ namespace dadabit {
     //% subcategory=Init
     export function dadabit_init() {
         // initColorSensor();
+        initBoardRGBLight();
         serial.redirect(
             SerialPin.P12,
             SerialPin.P8,
@@ -97,6 +99,14 @@ namespace dadabit {
             getHandleCmd();
         });
     }
+
+    function initBoardRGBLight() {
+        if (!boardRgbLight) {
+            boardRgbLight = RGBLight.create(DigitalPin.P15, 2, StartbitRGBPixelMode.RGB);
+        }
+        clearLight();
+    }
+
 
     /**
      * Temperature and humidity sensor initialization, please execute at boot time
@@ -452,10 +462,56 @@ namespace dadabit {
     /**
       * Get battery voltage value
       */
-    //% weight=66 blockId="getBatteryVoltage" block="Get battery voltage (mV)"
+    //% weight=68 blockId="getBatteryVoltage" block="Get battery voltage (mV)"
     //% subcategory=Sensor     
     export function getBatteryVoltage(): number {
         return batVoltage;
+    }
+
+     /**
+         * Set the brightness of the strip. This flag only applies to future operation.
+         * @param brightness a measure of LED brightness in 0-255. eg: 255
+    */
+    //% blockId="boardRGBsetBrightness" block="set board RGB light brightness %brightness"
+    //% weight=66
+    //% subcategory=LED
+    export function boardRGBsetBrightness(brightness: number): void {
+        boardRgbLight.setBrightness(brightness);
+    }
+
+    /**
+     * Set the color of the colored lights, after finished the setting please perform  the display of colored lights.
+     */
+    //% weight=65 blockId=setBoardPixelRGB block="Set board RGB|%lightoffset|color to %rgb"
+    //% subcategory=LED
+    export function setBoardPixelRGB(lightoffset: Lights, rgb: RGBColors) {
+        boardRgbLight.setPixelColor(lightoffset, rgb);
+    }
+    /**
+     * Set RGB Color argument
+     */
+    //% weight=64 blockId=setBoardPixelRGBArgs block="Set board RGB|%lightoffset|color to %rgb"
+    //% subcategory=LED
+    export function setBoardPixelRGBArgs(lightoffset: Lights, rgb: number) {
+        boardRgbLight.setPixelColor(lightoffset, rgb);
+    }
+
+    /**
+     * Display the colored lights, and set the color of the colored lights to match the use. After setting the color of the colored lights, the color of the lights must be displayed.
+     */
+    //% weight=63 blockId=showBoardLight block="Show board RGB light"
+    //% subcategory=LED
+    export function showBoardLight() {
+        boardRgbLight.show();
+    }
+
+    /**
+     * Clear the color of the colored lights and turn off the lights.
+     */
+    //% weight=62 blockGap=50 blockId=clearBoardLight block="Clear board RGB light"
+    //% subcategory=LED
+    export function clearBoardLight() {
+        boardRgbLight.clear();
     }
 
     /**
