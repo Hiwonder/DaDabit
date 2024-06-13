@@ -102,7 +102,7 @@ namespace dadabit {
 
     function initBoardRGBLight() {
         if (!boardRgbLight) {
-            boardRgbLight = RGBLight.create(DigitalPin.P15, 2, StartbitRGBPixelMode.RGB);
+            boardRgbLight = RGBLight.create(DigitalPin.P15, 2, RGBPixelMode.RGB);
         }
         clearLight();
     }
