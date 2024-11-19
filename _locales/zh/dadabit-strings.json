@@ -87,7 +87,7 @@
 	"dadabit.GETDISTANCE|block": "获取超声波测距值(cm)",
 	"dadabit.checkCurrentColor|block":"检测到颜色 %color",
 	"dadabit.get_color|block":"颜色 %color 值(0~255)",
-	"databit.color_sensor_init|block": "初始化颜色识别传感器接口 %port",
+	"dadabit.color_sensor_init|block": "初始化颜色识别传感器接口 %port",
 	"{id:subcategory}Init": "初始化",
 	"{id:subcategory}Control": "控制",
 	"{id:subcategory}Sensor": "传感器",
