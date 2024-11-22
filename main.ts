@@ -169,7 +169,9 @@ namespace dadabit {
     //% weight=86 blockId=color_sensor_init block="Initialize color recognition sensor %port"
     //% subcategory=Init
     export function color_sensor_init(port: iicPort) {
-
+        InitColor();
+        enableLightSensor(true);
+        control.waitMicros(100);
     }
 
     /**
@@ -496,12 +498,69 @@ namespace dadabit {
     const Sonar_I2C_ADDR = 0x77;
 
     //% weight=67 blockId=GETDISTANCE block="Get Distance (cm)"
-    //% subcategory=Sensor blockGap=50 
+    //% subcategory=Sensor
     export function GETDISTANCE(): number {
         let distance = i2cread(Sonar_I2C_ADDR, 0) + i2cread(Sonar_I2C_ADDR, 1) * 256;
         if (distance > 65500)
             distance = 0
         return Math.round(distance / 10);
+    }
+
+    //% weight=66 blockId=setUltrasonicColor block="Set Ultrasonic sensor color %rgb"
+    //% subcategory=Sensor blockGap=50
+    export function setUltrasonicColor(rgb: RGBColors) {
+        let tureRgb = 0;
+        switch (rgb)
+        {
+            case RGBColors.Red:
+                tureRgb = 0xFF0000;
+                break;    
+
+            case RGBColors.Orange:
+                tureRgb = 0xFFA500;    
+                break;    
+
+            case RGBColors.Yellow:
+                tureRgb = 0xFFFF00;
+                break;    
+                
+            case RGBColors.Green:
+                tureRgb = 0x00FF00;    
+                break;    
+
+                case RGBColors.Blue:
+                tureRgb = 0x0000FF;
+                break;    
+                
+            case RGBColors.Indigo:
+                tureRgb = 0x4b0082;    
+                break;    
+
+            case RGBColors.Violet:
+                tureRgb = 0x8a2be2;
+                break;    
+                
+            case RGBColors.Purple:
+                tureRgb = 0xFF00FF;    
+                break;   
+
+            case RGBColors.White:
+                tureRgb = 0xFFFFFF;    
+                break;   
+        }
+        let buf2 = pins.createBuffer(7);
+        buf2[0] = 2;
+        buf2[1] = 0;
+        pins.i2cWriteBuffer(Sonar_I2C_ADDR, buf2)
+        let buf = pins.createBuffer(7);
+        buf[0] = 3;
+        buf[1] = (tureRgb >> 16) & 0xff;
+        buf[2] = (tureRgb >> 8) & 0xff;
+        buf[3] = tureRgb & 0xff;
+        buf[4] = (tureRgb >> 16) & 0xff;
+        buf[5] = (tureRgb >> 8) & 0xff;
+        buf[6] = tureRgb & 0xff;
+        pins.i2cWriteBuffer(Sonar_I2C_ADDR, buf)
     }
 
     export enum Colors {
@@ -588,9 +647,9 @@ namespace dadabit {
     const AMBIENT_LIGHT = 1;
     const ALL = 7;
 
-    const red_wb = 2500;
-    const green_wb = 3900;
-    const blue_wb = 5820;
+    const red_wb = 2130;
+    const green_wb = 3500;
+    const blue_wb = 4620;
 
     function rgb_i2cwrite(reg: number, value: number) {
         let buf = pins.createBuffer(2);
@@ -746,7 +805,7 @@ namespace dadabit {
     /**
 	 *  Color sensor return the color.
 	 */
-    //% weight=66 blockId=checkCurrentColor block="Current color %color"
+    //% weight=62 blockId=checkCurrentColor block="Current color is %color"
     //% subcategory=Sensor
     export function checkCurrentColor(color: Colors): boolean {
         let c = rgb_i2cread(APDS9960_CDATAL) + rgb_i2cread(APDS9960_CDATAH) * 256;
@@ -789,7 +848,7 @@ namespace dadabit {
     /**
 	 *  Color sensor return the color.
 	 */
-    //% weight=65 blockId=get_color block="color %color value(0~255)"
+    //% weight=60 blockId=get_color block="color %color value(0~255)"
     //% subcategory=Sensor
     export function get_color(color: RGBValue): number {
         let value = 0;
