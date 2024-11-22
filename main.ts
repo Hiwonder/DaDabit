@@ -501,7 +501,7 @@ namespace dadabit {
         let distance = i2cread(Sonar_I2C_ADDR, 0) + i2cread(Sonar_I2C_ADDR, 1) * 256;
         if (distance > 65500)
             distance = 0
-        return distance / 10;
+        return Math.round(distance / 10);
     }
 
     export enum Colors {
