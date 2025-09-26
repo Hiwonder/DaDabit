@@ -1037,8 +1037,7 @@ namespace dadabit {
     //% subcategory=Communication
     //% blockGap=50 
     export function getDatafromWifi(): Buffer {
-        let received = pins.i2cReadBuffer(WIFI_MODE_ADRESS, 3)
-        return received;
+        return removeValueFromBuffer(pins.i2cReadBuffer(WIFI_MODE_ADRESS, 4), 0xd3);
     }
 
     /**
@@ -1164,5 +1163,16 @@ namespace dadabit {
         serial.writeString("data2:")
         serial.writeLine(value)
         return value;
+    }
+
+    function removeValueFromBuffer(buf: Buffer, value: number): Buffer {
+        let count = 0;
+        for (let i = 0; i < buf.length; i++) if (buf[i] !== value) count++;
+        const result = pins.createBuffer(count);
+        let index = 0;
+        for (let i = 0; i < buf.length; i++) {
+            if (buf[i] !== value) result.setNumber(NumberFormat.UInt8LE, index++, buf[i]);
+        }
+        return result;
     }
 }
