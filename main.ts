@@ -754,7 +754,7 @@ namespace dadabit {
         Green = 0x02,
         //% block="Blue"
         Blue = 0x03,
-        //% block="Black"
+        //% block="None"
         None = 0x06
     }
 
