@@ -109,5 +109,5 @@
 	"dadabit.mcp_action_finish|block": "通知AIModule工具调用完成",
 	"dadabit.get_mcp_return|block": "获取AIModule被调用工具返回参数",
 	"dadabit.setVision|block": "设置视觉任务%params",
-	"dadabit.get_mcp_setting_length|block": "获取MCP设置参数长度(不能超过1024)",
+	"dadabit.get_mcp_setting_length|block": "获取MCP设置参数长度(不能超过1024)"
 }
