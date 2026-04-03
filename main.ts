@@ -222,7 +222,7 @@ namespace dadabit {
     }
 
     /**
-     * Digital Tube initialization, please execute at boot time
+     * light sensor initialization, please execute at boot time
     */
     //% weight=93 blockId=lightSensor_init block="Initialize light sensor at port %port"
     //% subcategory=Init
@@ -231,7 +231,7 @@ namespace dadabit {
     }
 
     /**
-     *  sensor initialization, please execute at boot time
+     *  Digital Tube initialization, please execute at boot time
     */
     //% weight=92 blockId=digitaltube_init block="Initialize digital tube at port %port"
     //% subcategory=Init
@@ -442,7 +442,7 @@ namespace dadabit {
 
     const DIGITALTUBE_ADDRESS = 0x4E;
 
-    //% weight=81 blockId=digitalTubeShowNumber block="Digital tube show number %speed"
+    //% weight=81 blockId=digitalTubeShowNumber block="Digital tube show number %value"
     //% subcategory=Control
     export function digitalTubeShowNumber(value: number) {
         if (digitaltuePort === INVALID_PORT) return;
@@ -683,7 +683,7 @@ namespace dadabit {
     const Sonar_I2C_ADDR = 0x77;
 
     //% weight=67 blockId=GETDISTANCE block="Get Distance (cm)"
-    //% subcategory=Sensor blockGap=50
+    //% subcategory=Sensor
     export function GETDISTANCE(): number {
         let distance = i2cread(Sonar_I2C_ADDR, 0) + i2cread(Sonar_I2C_ADDR, 1) * 256;
         if (distance > 65500)
@@ -834,7 +834,7 @@ namespace dadabit {
     /**
     *  Color sensor return the color.
     */
-    //% weight=60 blockId=get_color block="color %color value(0~255)"
+    //% weight=60 blockId=get_color block="color %color value"
     //% subcategory=Sensor
     export function get_color(color: RGBValue): number {
         let value = 0
