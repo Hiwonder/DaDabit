@@ -548,11 +548,11 @@ namespace dadabit {
     /**
       * Get rainwater sensor value
       */
-    //% weight=76 blockId="getRainWater" block="Get rainwater value"
+    //% weight=76 blockId="getRainWater" block="Get rainwater value (0~100)"
     //% subcategory=Sensor     
     export function getRainWater(): number {
         let ad = pins.analogReadPin(AnalogPin.P1);
-        return Math.round(mapRGB(ad, 0, 1024, 0, 255));
+        return Math.round(mapRGB(ad, 0, 1024, 0, 100));
     }
 
     /**
@@ -562,7 +562,7 @@ namespace dadabit {
     //% subcategory=Sensor     
     export function getLightSensorValue(): number {
         let ad = pins.analogReadPin(AnalogPin.P1);
-        return 255 - Math.round(mapRGB(ad, 0, 1024, 0, 255));
+        return 100 - Math.round(mapRGB(ad, 0, 1024, 0, 100));
     }
 
     /**
