@@ -13,10 +13,10 @@ namespace dadabit {
     }
 
     export enum iicPort {
+        //% block="3"
+        port3 = 0x03,
         //% block="4"
         port4 = 0x04,
-        //% block="5"
-        port5 = 0x05,
         //% block="6"
         port6 = 0x06
     }
@@ -27,6 +27,13 @@ namespace dadabit {
     }
 
     export enum ioPort2 {
+        //% block="2"
+        port2 = 0x02
+    }
+
+    export enum ioPort12 {
+        //% block="1"
+        port1 = 0x01,
         //% block="2"
         port2 = 0x02
     }
@@ -63,6 +70,52 @@ namespace dadabit {
         White
     }
 
+    export enum TrackbitStateType {
+        //% block="◌ ◌ ◌ ◌" 
+        Tracking_State_0 = 0,
+        //% block="◌ ● ● ◌" 
+        Tracking_State_1 = 6,
+        //% block="◌ ◌ ● ◌" 
+        Tracking_State_2 = 4,
+        //% block="◌ ● ◌ ◌" 
+        Tracking_State_3 = 2,
+    
+    
+        //% block="● ◌ ◌ ●" 
+        Tracking_State_4 = 9,
+        //% block="● ● ● ●" 
+        Tracking_State_5 = 15,
+        //% block="● ◌ ● ●" 
+        Tracking_State_6 = 13,
+        //% block="● ● ◌ ●" 
+        Tracking_State_7 = 11,
+    
+        //% block="● ◌ ◌ ◌" 
+        Tracking_State_8 = 1,
+        //% block="● ● ● ◌" 
+        Tracking_State_9 = 7,
+        //% block="● ◌ ● ◌" 
+        Tracking_State_10 = 5,
+        //% block="● ● ◌ ◌" 
+        Tracking_State_11 = 3,
+    
+        //% block="◌ ◌ ◌ ●" 
+        Tracking_State_12 = 8,
+        //% block="◌ ● ● ●" 
+        Tracking_State_13 = 14,
+        //% block="◌ ◌ ● ●" 
+        Tracking_State_14 = 12,
+        //% block="◌ ● ◌ ●" 
+        Tracking_State_15 = 10
+    }
+
+    export enum TrackbitType {
+        //% block="◌" 
+        State_0 = 0,
+        //% block="●" 
+        State_1 = 1
+    }
+
     let rgbLight: RGBLight.LHRGBLight;
     let boardRgbLight: RGBLight.LHRGBLight;
 
@@ -75,6 +128,14 @@ namespace dadabit {
     let wifiPort = INVALID_PORT;
     let rgbPort = INVALID_PORT;
     let rainwaterPort = INVALID_PORT;
+    let fanPin1 = INVALID_PORT;
+    let fanPin2 = INVALID_PORT;
+    let avoidSensorPort = INVALID_PORT;
+    let lightPort = INVALID_PORT;
+    let digitaltuePort = INVALID_PORT;
+    let linefollowPort = INVALID_PORT;
+
+    const AIMODULE_ADDR = 0x55;
 
     let temperature: number = 0;
     let airhumidity: number = 0;
@@ -98,6 +159,7 @@ namespace dadabit {
         basic.forever(() => {
             getHandleCmd();
         });
+        basic.forever(() => { getAIModuleCmd(); });
     }
 
     function initBoardRGBLight() {
@@ -111,16 +173,31 @@ namespace dadabit {
     /**
      * Temperature and humidity sensor initialization, please execute at boot time
     */
-    //% weight=98 blockId=temphumidity_init block="Initialize temperature and humidity sensor at port %port"
+    //% weight=99 blockId=temphumidity_init block="Initialize temperature and humidity sensor at port %port"
     //% subcategory=Init
     export function temphumidity_init(port: iicPort) {
         tempHumiPort = port;
     }
 
+    //% weight=98 blockId=fan_init block="Initialize fan module %port"
+    //% subcategory=Init
+    export function fan_init(port: ioPort12) {
+        switch (port) {
+            case ioPort12.port1:
+                fanPin1 = AnalogPin.P1;
+                fanPin2 = AnalogPin.P2;
+                break;
+            case ioPort12.port2:
+                fanPin1 = AnalogPin.P13;
+                fanPin2 = AnalogPin.P14;
+                break;
+        }
+    }
+
     /**
      * Wifi module initialization, please execute at boot time
     */
-    //% weight=96 blockId=wifi_init block="Initialize wifi module at port %port"
+    //% weight=97 blockId=wifi_init block="Initialize wifi module at port %port"
     //% subcategory=Init
     export function wifi_init(port: iicPort) {
         wifiPort = port;
@@ -129,16 +206,43 @@ namespace dadabit {
     /**
      * Rainwater sensor initialization, please execute at boot time
     */
-    //% weight=94 blockId=rainwater_init block="Initialize rainwater sensor at port %port"
+    //% weight=96 blockId=rainwater_init block="Initialize rainwater sensor at port %port"
     //% subcategory=Init
     export function rainwater_init(port: ioPort1) {
         rainwaterPort = port;
     }
 
     /**
+     * Infrared obstacle avoidance sensor initialization, please execute at boot time
+    */
+    //% weight=95 blockId=avoidSensor_init block="Initialize infrared obstacle avoidance sensor at port %port"
+    //% subcategory=Init
+    export function avoidSensor_init(port: ioPort12) {
+        avoidSensorPort = port;
+    }
+
+    /**
+     * Digital Tube initialization, please execute at boot time
+    */
+    //% weight=93 blockId=lightSensor_init block="Initialize light sensor at port %port"
+    //% subcategory=Init
+    export function lightSensor_init(port: ioPort1) {
+        lightPort = port;
+    }
+
+    /**
+     *  sensor initialization, please execute at boot time
+    */
+    //% weight=92 blockId=digitaltube_init block="Initialize digital tube at port %port"
+    //% subcategory=Init
+    export function digitaltube_init(port: iicPort) {
+        digitaltuePort = port;
+    }
+
+    /**
      * RGB module initialization, please execute at boot time
     */
-    //% weight=92 blockId=rgb_init block="Initialize RGB module at port %port"
+    //% weight=91 blockId=rgb_init block="Initialize RGB module at port %port"
     //% subcategory=Init
     export function rgb_init(port: ioPort2) {
         rgbPort = port;
@@ -151,7 +255,7 @@ namespace dadabit {
     //% weight=90 blockId=linefollower_init block="Initialize linefollower sensor at port %port"
     //% subcategory=Init
     export function linefollower_init(port: iicPort) {
-
+        linefollowPort = port;
     }
 
     /**
@@ -170,7 +274,6 @@ namespace dadabit {
     //% subcategory=Init
     export function color_sensor_init(port: iicPort) {
         InitColor();
-        enableLightSensor(true);
         control.waitMicros(100);
     }
 
@@ -261,7 +364,7 @@ namespace dadabit {
     * Set the angle of lego 270° servo 1 to 6, range of -135~135 degree
     * @param index servo number in 1-6. eg: 1
     */
-    //% weight=81 blockId=setLego270Servo block="Set Lego 270° servo|index %index|angle %angle|duration %duration"
+    //% weight=84 blockId=setLego270Servo block="Set Lego 270° servo|index %index|angle %angle|duration %duration"
     //% angle.min=-135 angle.max=135
     //% subcategory=Control
     export function setLego270Servo(index: number, angle: number, duration: number) {
@@ -290,7 +393,7 @@ namespace dadabit {
     * Set the speed of lego 360° servo 1 to 6, range of 0~100
     * @param index servo number in 1-6. eg: 1
     */
-    //% weight=80 blockId=setLego360Servo block="Set Lego 360° servo|index %index|oriention %oriention|speed %speed"
+    //% weight=83 blockId=setLego360Servo block="Set Lego 360° servo|index %index|oriention %oriention|speed %speed"
     //% speed.min=0 speed.max=100
     //% subcategory=Control
     export function setLego360Servo(index: number, oriention: Oriention, speed: number) {
@@ -313,6 +416,42 @@ namespace dadabit {
         serial.writeBuffer(buf);
     }
 
+    //% weight=82 blockId=setFanSpeed block="Set fan speed(-100~100) %speed"
+    //% speed.min=-100 speed.max=100
+    //% subcategory=Control
+    export function setFanSpeed(speed: number) {
+        if (fanPin1 === INVALID_PORT) return;
+
+        if (speed > 100 || speed < -100) {
+            return;
+        }
+
+        if (speed < 0) {
+            pins.analogWritePin(fanPin2, 0);
+            pins.analogWritePin(fanPin1, pins.map(-speed, 0, 100, 0, 1023));
+        }
+        else if (speed > 0) {
+            pins.analogWritePin(fanPin1, 0);
+            pins.analogWritePin(fanPin2, pins.map(speed, 0, 100, 0, 1023));
+        }
+        else {
+            pins.analogWritePin(fanPin2, 0);
+            pins.analogWritePin(fanPin1, 0);
+        }
+    }
+
+    const DIGITALTUBE_ADDRESS = 0x4E;
+
+    //% weight=81 blockId=digitalTubeShowNumber block="Digital tube show number %speed"
+    //% subcategory=Control
+    export function digitalTubeShowNumber(value: number) {
+        if (digitaltuePort === INVALID_PORT) return;
+        const buf = pins.createBuffer(3);
+        buf[0] = 0x01;
+        buf[1] = (value >> 8) & 0xff;
+        buf[2] = value & 0xff;
+        pins.i2cWriteBuffer(DIGITALTUBE_ADDRESS, buf);
+    }
 
     let ATH10_I2C_ADDR = 0x38;
     function temp_i2cwrite(value: number): number {
@@ -400,7 +539,7 @@ namespace dadabit {
     /**
       * Get air temperature and humidity sensor value
       */
-    //% weight=74 blockId="getTemperature" block="Get air %select value"
+    //% weight=78 blockId="getTemperature" block="Get air %select value"
     //% subcategory=Sensor     
     export function getTemperature(select: Temp_humi): number {
         return readTempHumi(select);
@@ -409,30 +548,76 @@ namespace dadabit {
     /**
       * Get rainwater sensor value
       */
-    //% weight=72 blockId="getRainWater" block="Get rainwater value"
+    //% weight=76 blockId="getRainWater" block="Get rainwater value"
     //% subcategory=Sensor     
     export function getRainWater(): number {
         let ad = pins.analogReadPin(AnalogPin.P1);
         return Math.round(mapRGB(ad, 0, 1024, 0, 255));
     }
 
-    const LINE_FOLLOWER_I2C_ADDR = 0x78
-    //% weight=70 blockId=line_followers block="Line follower %lineFollowerSensor in %lineColor ?"
+    /**
+      * Get light sensor value
+      */
+    //% weight=75 blockId="getLightSensorValue" block="Get light sensor value (0~255)"
+    //% subcategory=Sensor     
+    export function getLightSensorValue(): number {
+        let ad = pins.analogReadPin(AnalogPin.P1);
+        return 255 - Math.round(mapRGB(ad, 0, 1024, 0, 255));
+    }
+
+    /**
+      * Get infrared obstacle avoidance sensor status,1 detect obstacle,0 no detect obstacle
+      */
+    //% weight=74 blockId="getAvoidSensorValue" block="Infrared obstacle avoidance sensor has detected obstacle ?"
+    //% subcategory=Sensor  blockGap=50
+    export function getAvoidSensorValue(): boolean {
+        let status = 0;
+        let flag: boolean = false;
+        let pin: DigitalPin;
+
+        switch (avoidSensorPort) {
+            case ioPort12.port1:
+                pin = DigitalPin.P1;
+                break;
+            case ioPort12.port2:
+                pin = DigitalPin.P13;
+                break;
+        }
+
+        pins.setPull(pin, PinPullMode.PullUp);
+        status = pins.digitalReadPin(pin);
+
+        if (status == 1)
+            flag = false;
+        else
+            flag = true;
+        return flag;
+    }
+
+   const LINE_FOLLOWER_I2C_ADDR = 0x5C
+    //% weight=73 blockId=getLinefollowSensorState block="Line follower detected %state"
     //% inlineInputMode=inline
     //% subcategory=Sensor
-    export function line_followers(lineFollowerSensor: LineFollowerSensors, lineColor: LineColor): boolean {
-        pins.i2cWriteNumber(LINE_FOLLOWER_I2C_ADDR, 1, NumberFormat.UInt8BE);
-        let data = pins.i2cReadNumber(LINE_FOLLOWER_I2C_ADDR, NumberFormat.UInt8BE);
+    export function getLinefollowSensorState(state: TrackbitStateType) : boolean{
+        let result = i2cread(LINE_FOLLOWER_I2C_ADDR, 0x05)
+        return result == state
+    }
+
+    //% weight=72 blockId=line_followers block="Line follower %lineFollowerSensor in %lineColor ?"
+    //% inlineInputMode=inline
+    //% subcategory=Sensor blockGap=50
+    export function line_followers(lineFollowerSensor: LineFollowerSensors, lineColor: TrackbitType): boolean {
+        let data = i2cread(LINE_FOLLOWER_I2C_ADDR, 0x05)
         let status = false;
         switch (lineFollowerSensor) {
             case LineFollowerSensors.S1:
                 if (data & 0x01) {
-                    if (lineColor == LineColor.Black) {
+                    if (lineColor == TrackbitType.State_0) {
                         status = true;
                     }
                 }
                 else {
-                    if (lineColor == LineColor.White) {
+                    if (lineColor == TrackbitType.State_1) {
                         status = true;
                     }
                 }
@@ -440,12 +625,12 @@ namespace dadabit {
 
             case LineFollowerSensors.S2:
                 if (data & 0x02) {
-                    if (lineColor == LineColor.Black) {
+                    if (lineColor == TrackbitType.State_0) {
                         status = true;
                     }
                 }
                 else {
-                    if (lineColor == LineColor.White) {
+                    if (lineColor == TrackbitType.State_1) {
                         status = true;
                     }
                 }
@@ -453,12 +638,12 @@ namespace dadabit {
 
             case LineFollowerSensors.S3:
                 if (data & 0x04) {
-                    if (lineColor == LineColor.Black) {
+                    if (lineColor == TrackbitType.State_0) {
                         status = true;
                     }
                 }
                 else {
-                    if (lineColor == LineColor.White) {
+                    if (lineColor == TrackbitType.State_1) {
                         status = true;
                     }
                 }
@@ -466,12 +651,12 @@ namespace dadabit {
 
             case LineFollowerSensors.S4:
                 if (data & 0x08) {
-                    if (lineColor == LineColor.Black) {
+                    if (lineColor == TrackbitType.State_0) {
                         status = true;
                     }
                 }
                 else {
-                    if (lineColor == LineColor.White) {
+                    if (lineColor == TrackbitType.State_1) {
                         status = true;
                     }
                 }
@@ -498,7 +683,7 @@ namespace dadabit {
     const Sonar_I2C_ADDR = 0x77;
 
     //% weight=67 blockId=GETDISTANCE block="Get Distance (cm)"
-    //% subcategory=Sensor
+    //% subcategory=Sensor blockGap=50
     export function GETDISTANCE(): number {
         let distance = i2cread(Sonar_I2C_ADDR, 0) + i2cread(Sonar_I2C_ADDR, 1) * 256;
         if (distance > 65500)
@@ -510,43 +695,42 @@ namespace dadabit {
     //% subcategory=Sensor blockGap=50
     export function setUltrasonicColor(rgb: RGBColors) {
         let tureRgb = 0;
-        switch (rgb)
-        {
+        switch (rgb) {
             case RGBColors.Red:
                 tureRgb = 0xFF0000;
-                break;    
+                break;
 
             case RGBColors.Orange:
-                tureRgb = 0xFFA500;    
-                break;    
+                tureRgb = 0xFFA500;
+                break;
 
             case RGBColors.Yellow:
                 tureRgb = 0xFFFF00;
-                break;    
-                
-            case RGBColors.Green:
-                tureRgb = 0x00FF00;    
-                break;    
+                break;
 
-                case RGBColors.Blue:
+            case RGBColors.Green:
+                tureRgb = 0x00FF00;
+                break;
+
+            case RGBColors.Blue:
                 tureRgb = 0x0000FF;
-                break;    
-                
+                break;
+
             case RGBColors.Indigo:
-                tureRgb = 0x4b0082;    
-                break;    
+                tureRgb = 0x4b0082;
+                break;
 
             case RGBColors.Violet:
                 tureRgb = 0x8a2be2;
-                break;    
-                
+                break;
+
             case RGBColors.Purple:
-                tureRgb = 0xFF00FF;    
-                break;   
+                tureRgb = 0xFF00FF;
+                break;
 
             case RGBColors.White:
-                tureRgb = 0xFFFFFF;    
-                break;   
+                tureRgb = 0xFFFFFF;
+                break;
         }
         let buf2 = pins.createBuffer(7);
         buf2[0] = 2;
@@ -571,10 +755,6 @@ namespace dadabit {
         //% block="Blue"
         Blue = 0x03,
         //% block="Black"
-        Black = 0x04,
-        //% block="White"
-        White = 0x05,
-        //% block="None"
         None = 0x06
     }
 
@@ -584,299 +764,107 @@ namespace dadabit {
         //% block="Green"
         Green = 0x02,
         //% block="Blue"
-        Blue = 0x03  
+        Blue = 0x03
     }
 
 
-    const APDS9960_I2C_ADDR = 0x39;
-    const APDS9960_ID_1 = 0xA8;
-    const APDS9960_ID_2 = 0x9C;
-    /* APDS-9960 register addresses */
-    const APDS9960_ENABLE = 0x80;
-    const APDS9960_ATIME = 0x81;
-    const APDS9960_WTIME = 0x83;
-    const APDS9960_AILTL = 0x84;
-    const APDS9960_AILTH = 0x85;
-    const APDS9960_AIHTL = 0x86;
-    const APDS9960_AIHTH = 0x87;
-    const APDS9960_PERS = 0x8C;
-    const APDS9960_CONFIG1 = 0x8D;
-    const APDS9960_PPULSE = 0x8E;
-    const APDS9960_CONTROL = 0x8F;
-    const APDS9960_CONFIG2 = 0x90;
-    const APDS9960_ID = 0x92;
-    const APDS9960_STATUS = 0x93;
-    const APDS9960_CDATAL = 0x94;
-    const APDS9960_CDATAH = 0x95;
-    const APDS9960_RDATAL = 0x96;
-    const APDS9960_RDATAH = 0x97;
-    const APDS9960_GDATAL = 0x98;
-    const APDS9960_GDATAH = 0x99;
-    const APDS9960_BDATAL = 0x9A;
-    const APDS9960_BDATAH = 0x9B;
-    const APDS9960_POFFSET_UR = 0x9D;
-    const APDS9960_POFFSET_DL = 0x9E;
-    const APDS9960_CONFIG3 = 0x9F;
-    const APDS9960_GCONF4 = 0xAB;
-    const APDS9960_AICLEAR = 0xE7;
-
-
-    /* LED Drive values */
-    const LED_DRIVE_100MA = 0;
-
-    /* ALS Gain (AGAIN) values */
-    const AGAIN_4X = 1;
-
-    /* Default values */
-    const DEFAULT_ATIME = 219;    // 103ms
-    const DEFAULT_WTIME = 246;    // 27ms
-    const DEFAULT_PROX_PPULSE = 0x87;    // 16us, 8 pulses
-    const DEFAULT_POFFSET_UR = 0;       // 0 offset
-    const DEFAULT_POFFSET_DL = 0;       // 0 offset      
-    const DEFAULT_CONFIG1 = 0x60;    // No 12x wait (WTIME) factor
-    const DEFAULT_AILT = 0xFFFF;  // Force interrupt for calibration
-    const DEFAULT_AIHT = 0;
-    const DEFAULT_PERS = 0x11;    // 2 consecutive prox or ALS for int.
-    const DEFAULT_CONFIG2 = 0x01;    // No saturation interrupts or LED boost  
-    const DEFAULT_CONFIG3 = 0;       // Enable all photodiodes, no SAI
-    const DEFAULT_LDRIVE = LED_DRIVE_100MA;
-    const DEFAULT_AGAIN = AGAIN_4X;
-
-    const OFF = 0;
-    const POWER = 0;
-    const AMBIENT_LIGHT = 1;
-    const ALL = 7;
-
-    const red_wb = 2130;
-    const green_wb = 3500;
-    const blue_wb = 4620;
+    let COLOR_SENSOR_ADDRESS = 0x53
+    let COLOR_CONFIG_1 = 0x00
+    let COLOR_CONFIG_2 = 0x04
+    let COLOR_CONFIG_3 = 0x05
+    let COLOR_CONFIG_4 = 0x0D
 
     function rgb_i2cwrite(reg: number, value: number) {
         let buf = pins.createBuffer(2);
         buf[0] = reg;
         buf[1] = value;
-        pins.i2cWriteBuffer(APDS9960_I2C_ADDR, buf);
+        pins.i2cWriteBuffer(COLOR_SENSOR_ADDRESS, buf);
     }
 
-    function rgb_i2cread(reg: number): number {
-        pins.i2cWriteNumber(APDS9960_I2C_ADDR, reg, NumberFormat.UInt8BE);
-        let val = pins.i2cReadNumber(APDS9960_I2C_ADDR, NumberFormat.UInt8BE);
+    function rgb_i2cReadBuffer(reg: number, bytes: number): Buffer {
+        pins.i2cWriteNumber(COLOR_SENSOR_ADDRESS, reg, NumberFormat.UInt8BE);
+        let val = pins.i2cReadBuffer(COLOR_SENSOR_ADDRESS, bytes);
         return val;
     }
 
     function InitColor(): boolean {
-        let id = rgb_i2cread(APDS9960_ID);
-        setMode(ALL, OFF);
-        rgb_i2cwrite(APDS9960_ATIME, DEFAULT_ATIME);
-        rgb_i2cwrite(APDS9960_WTIME, DEFAULT_WTIME);
-        rgb_i2cwrite(APDS9960_PPULSE, DEFAULT_PROX_PPULSE);
-        rgb_i2cwrite(APDS9960_POFFSET_UR, DEFAULT_POFFSET_UR);
-        rgb_i2cwrite(APDS9960_POFFSET_DL, DEFAULT_POFFSET_DL);
-        rgb_i2cwrite(APDS9960_CONFIG1, DEFAULT_CONFIG1);
-        setLEDDrive(DEFAULT_LDRIVE);
-        setAmbientLightGain(DEFAULT_AGAIN);
-        setLightIntLowThreshold(DEFAULT_AILT);
-        setLightIntHighThreshold(DEFAULT_AIHT);
-        rgb_i2cwrite(APDS9960_PERS, DEFAULT_PERS);
-        rgb_i2cwrite(APDS9960_CONFIG2, DEFAULT_CONFIG2);
-        rgb_i2cwrite(APDS9960_CONFIG3, DEFAULT_CONFIG3);
+        rgb_i2cwrite(COLOR_CONFIG_1, 0x06);
+        rgb_i2cwrite(COLOR_CONFIG_2, 0x42);
+        rgb_i2cwrite(COLOR_CONFIG_3, 0x03);
         return true;
     }
 
-    function setLEDDrive(drive: number) {
-        let val = rgb_i2cread(APDS9960_CONTROL);
-        /* Set bits in register to given value */
-        drive &= 0b00000011;
-        drive = drive << 6;
-        val &= 0b00111111;
-        val |= drive;
-        rgb_i2cwrite(APDS9960_CONTROL, val);
-    }
-
-    function setLightIntLowThreshold(threshold: number) {
-        let val_low = threshold & 0x00FF;
-        let val_high = (threshold & 0xFF00) >> 8;
-        rgb_i2cwrite(APDS9960_AILTL, val_low);
-        rgb_i2cwrite(APDS9960_AILTH, val_high);
-    }
-
-    function setLightIntHighThreshold(threshold: number) {
-        let val_low = threshold & 0x00FF;
-        let val_high = (threshold & 0xFF00) >> 8;
-        rgb_i2cwrite(APDS9960_AIHTL, val_low);
-        rgb_i2cwrite(APDS9960_AIHTH, val_high);
-    }
-
-
-    function rgb2hue(r: number, g: number, b: number): number {
-        let max = Math.max(r, Math.max(g, b))
-        let min = Math.min(r, Math.min(g, b))
-        let c = max - min;
-        let hue = 0;
-        let segment = 0;
-        let shift = 0;
-        if (c == 0)
-            return 0;
-        if ((r > g) && (r > b)) {
-            segment = (60.0 * (g - b)) / c;
-            if (segment < 0)
-                hue = segment + 360;
-        }
-        else if ((g > b) && (g > r)) {
-            segment = (60.0 * (b - r)) / c;
-            hue = segment + 120;
-        }
-        else if ((b > g) && (b > r)) {
-            segment = (60.0 * (r - g)) / c;
-            hue = segment + 240;
-        }
-        return hue;
-    }
-
-    function setMode(mode: number, enable: number) {
-        let reg_val = getMode();
-        /* Change bit(s) in ENABLE register */
-        enable = enable & 0x01;
-        if (mode >= 0 && mode <= 6) {
-            if (enable > 0) {
-                reg_val |= (1 << mode);
-            }
-            else {
-                //reg_val &= ~(1 << mode);
-                reg_val &= (0xff - (1 << mode));
-            }
-        }
-        else if (mode == ALL) {
-            if (enable > 0) {
-                reg_val = 0x7F;
-            }
-            else {
-                reg_val = 0x00;
-            }
-        }
-        rgb_i2cwrite(APDS9960_ENABLE, reg_val);
-    }
-
-    function getMode(): number {
-        let enable_value = rgb_i2cread(APDS9960_ENABLE);
-        return enable_value;
-    }
-
-    function enableLightSensor(interrupts: boolean) {
-        setAmbientLightGain(DEFAULT_AGAIN);
-        if (interrupts) {
-            setAmbientLightIntEnable(1);
-        }
-        else {
-            setAmbientLightIntEnable(0);
-        }
-        enablePower();
-        setMode(AMBIENT_LIGHT, 1);
-    }
-
-    function setAmbientLightGain(drive: number) {
-        let val = rgb_i2cread(APDS9960_CONTROL);
-        /* Set bits in register to given value */
-        drive &= 0b00000011;
-        val &= 0b11111100;
-        val |= drive;
-        rgb_i2cwrite(APDS9960_CONTROL, val);
-    }
-
-    function getAmbientLightGain(): number {
-        let val = rgb_i2cread(APDS9960_CONTROL);
-        val &= 0b00000011;
-        return val;
-    }
-
-    function enablePower() {
-        setMode(POWER, 1);
-    }
-
-    function setAmbientLightIntEnable(enable: number) {
-        let val = rgb_i2cread(APDS9960_ENABLE);
-        /* Set bits in register to given value */
-        enable &= 0b00000001;
-        enable = enable << 4;
-        val &= 0b11101111;
-        val |= enable;
-        rgb_i2cwrite(APDS9960_ENABLE, val);
-    }
     /**
-	 *  Color sensor return the color.
-	 */
+    *  Color sensor return the color.
+    */
     //% weight=62 blockId=checkCurrentColor block="Current color is %color"
     //% subcategory=Sensor
     export function checkCurrentColor(color: Colors): boolean {
-        let c = rgb_i2cread(APDS9960_CDATAL) + rgb_i2cread(APDS9960_CDATAH) * 256;
-        let r = rgb_i2cread(APDS9960_RDATAL) + rgb_i2cread(APDS9960_RDATAH) * 256;
-        let g = rgb_i2cread(APDS9960_GDATAL) + rgb_i2cread(APDS9960_GDATAH) * 256;
-        let b = rgb_i2cread(APDS9960_BDATAL) + rgb_i2cread(APDS9960_BDATAH) * 256;
-
-        if (r > red_wb)
-            r = red_wb;
-        if (g > green_wb)
-            g = green_wb;
-        if (b > blue_wb)
-            b = blue_wb;
-
-        r = Math.round(mapRGB(r, 0, red_wb, 0, 255));
-        g = Math.round(mapRGB(g, 0, green_wb, 0, 255));
-        b = Math.round(mapRGB(b, 0, blue_wb, 0, 255));
-
-        let hsv = rgb2hue(r, g, b)
         let t = Colors.None;
-        if (c > 2200 && r > 65 && g > 65 && b > 65) {
-            t = Colors.White;
+        let value = 0
+        let read_dat = rgb_i2cReadBuffer(COLOR_CONFIG_4, 9);
+        let r = ((read_dat[5] << 16) | (read_dat[4] << 8) | read_dat[3]) & 0xFFFF;
+        let g = ((read_dat[2] << 16) | (read_dat[1] << 8) | read_dat[0]) & 0xFFFF;
+        let b = ((read_dat[8] << 16) | (read_dat[7] << 8) | read_dat[6]) & 0xFFFF;
+
+        // serial.writeString("r:")
+        // serial.writeNumber(r)
+        // serial.writeLine("")
+
+        // serial.writeString("g:")
+        // serial.writeNumber(g)
+        // serial.writeLine("")
+
+        // serial.writeString("b:")
+        // serial.writeNumber(b)
+        // serial.writeLine("")
+
+        if (10000 > r && r > 4000 && (r - g) > 500 && (r - b) > 500) {
+            t = Colors.Red
         }
-        else if (c > 800) {
-            if (hsv < 8 || hsv > 350)
-                t = Colors.Red;
-            else if (hsv > 60 && hsv < 170) {
-                t = Colors.Green;
-            }
-            else if (hsv > 195 && hsv < 230) {
-                t = Colors.Blue;
-            }
+        else if (10000 > g && g > 4000 && (g - r) > 500 && (g - b) > 500) {
+            t = Colors.Green
         }
-        else if (c > 200 && r > 10 && g > 7 && b > 7 && r < 16.5 && g < 15 && b < 14) {
-            t = Colors.Black;
+        else if (10000 > b && b > 4000 && (b - r) > 500 && (b - g) > 500) {
+            t = Colors.Blue
         }
         return (color == t);
     }
 
     /**
-	 *  Color sensor return the color.
-	 */
+    *  Color sensor return the color.
+    */
     //% weight=60 blockId=get_color block="color %color value(0~255)"
     //% subcategory=Sensor
     export function get_color(color: RGBValue): number {
-        let value = 0;
-        let r = rgb_i2cread(APDS9960_RDATAL) + rgb_i2cread(APDS9960_RDATAH) * 256;
-        let g = rgb_i2cread(APDS9960_GDATAL) + rgb_i2cread(APDS9960_GDATAH) * 256;
-        let b = rgb_i2cread(APDS9960_BDATAL) + rgb_i2cread(APDS9960_BDATAH) * 256;
+        let value = 0
+        let read_dat = rgb_i2cReadBuffer(COLOR_CONFIG_4, 9);
 
-        if (r > red_wb)
-            r = red_wb;
-        if (g > green_wb)
-            g = green_wb;
-        if (b > blue_wb)
-            b = blue_wb;
+        let r = ((read_dat[5] << 16) | (read_dat[4] << 8) | read_dat[3]) & 0xFFFF;
+        let g = ((read_dat[2] << 16) | (read_dat[1] << 8) | read_dat[0]) & 0xFFFF;
+        let b = ((read_dat[8] << 16) | (read_dat[7] << 8) | read_dat[6]) & 0xFFFF;
 
-        r = Math.round(mapRGB(r, 0, red_wb, 0, 255));
-        g = Math.round(mapRGB(g, 0, green_wb, 0, 255));
-        b = Math.round(mapRGB(b, 0, blue_wb, 0, 255));
+        // serial.writeString("r:")
+        // serial.writeNumber(r)
+        // serial.writeLine("")
 
-        switch (color)
-        {
+        // serial.writeString("g:")
+        // serial.writeNumber(g)
+        // serial.writeLine("")
+
+        // serial.writeString("b:")
+        // serial.writeNumber(b)
+        // serial.writeLine("")
+
+        switch (color) {
             case RGBValue.Red:
                 value = r;
                 break;
-            
+
             case RGBValue.Green:
                 value = g;
                 break;
-            
+
             case RGBValue.Blue:
                 value = b;
                 break;
@@ -884,10 +872,175 @@ namespace dadabit {
         return value;
     }
 
-     /**
-         * Set the brightness of the strip. This flag only applies to future operation.
-         * @param brightness a measure of LED brightness in 0-255. eg: 255
-    */
+    let buffer: Buffer;
+    function calculateChecksum(data: Buffer): number {
+        let checksum = 0;
+        for (let i = 0; i < data.length; i++) checksum ^= data.getUint8(i);
+        return checksum & 0xFF;
+    }
+
+    const status = ["unknown", "starting", "configuring", "idle", "connecting", "listening", "speaking", "upgrading", "activating", "audio_testing", "fatal_error", "invalid_state"];
+
+    let mcp_return = "";
+
+    let fragments: { groupId: number, data: Buffer[], totalFragments: number, receivedFragments: number }[] = [];
+    let fragmentTimeout = 2000;
+    let lastFragmentTime = 0;
+
+    function processFragment(fragmentId: number, totalFragments: number, actualData: Buffer): Buffer {
+        const currentTime = input.runningTime();
+
+        if (lastFragmentTime > 0 && currentTime - lastFragmentTime > fragmentTimeout) {
+            fragments = [];
+        }
+
+        lastFragmentTime = currentTime;
+
+        if (totalFragments === 1) return actualData;
+
+        if (fragmentId === 1) {
+            fragments.push({
+                groupId: currentTime,
+                data: [],
+                totalFragments: totalFragments,
+                receivedFragments: 0
+            });
+        }
+
+        if (fragments.length === 0) return null;
+
+        const fragmentInfo = fragments[fragments.length - 1];
+
+        if (fragmentId < 1 || fragmentId > totalFragments || fragmentInfo.totalFragments !== totalFragments) return null;
+
+        const fragmentIndex = fragmentId - 1;
+        if (fragmentInfo.data[fragmentIndex] === undefined) {
+            fragmentInfo.data[fragmentIndex] = actualData;
+            fragmentInfo.receivedFragments++;
+        }
+
+        if (fragmentInfo.receivedFragments === totalFragments) {
+            let totalLength = 0;
+            for (let i = 0; i < fragmentInfo.data.length; i++) {
+                if (fragmentInfo.data[i]) totalLength += fragmentInfo.data[i].length;
+            }
+
+            const reassembledData = pins.createBuffer(totalLength);
+            let offset = 0;
+            for (let i = 0; i < fragmentInfo.data.length; i++) {
+                if (fragmentInfo.data[i]) {
+                    for (let j = 0; j < fragmentInfo.data[i].length; j++) {
+                        reassembledData.setUint8(offset++, fragmentInfo.data[i].getUint8(j));
+                    }
+                }
+            }
+
+            fragments.pop();
+            return reassembledData;
+        }
+
+        return null;
+    }
+    function getAIModuleCmd() {
+        const received = pins.i2cReadBuffer(AIMODULE_ADDR, 8);
+        if (received.length < 8) return;
+
+        const flag = received.getNumber(NumberFormat.UInt16BE, 0);
+        const data_len = received.getNumber(NumberFormat.UInt16BE, 2);
+        const fragment_id = received.getNumber(NumberFormat.UInt16LE, 4);
+        const total_fragments = received.getNumber(NumberFormat.UInt16LE, 6);
+
+        if (flag == 0xAA55 && data_len > 0 && data_len <= 8192) {
+            const dataWithChecksum = pins.i2cReadBuffer(AIMODULE_ADDR, data_len + 1);
+            if (dataWithChecksum.length < data_len + 1) return;
+
+            const actualData = dataWithChecksum.slice(0, data_len);
+            const receivedChecksum = dataWithChecksum.getUint8(data_len);
+
+            if (receivedChecksum == calculateChecksum(actualData)) {
+                const reassembledData = processFragment(fragment_id, total_fragments, actualData);
+
+                if (reassembledData !== null) {
+                    if (reassembledData.length == 1) {
+                        const statusIdx = reassembledData.getUint8(0);
+                        if (statusIdx < status.length) mcp_return = status[statusIdx];
+                    } else {
+                        try {
+                            mcp_return = JSON.stringify(JSON.parse(reassembledData.toString()));
+                        } catch (e) { }
+                    }
+                }
+            }
+        }
+        basic.pause(100);
+    }
+
+    //% weight=93 blockId=get_mcp_setting_length block="Get the parameter length of the MCP setting(The length cannot exceed 1024)"
+    //% subcategory=AIModule
+    export function get_mcp_setting_length(): number {
+        return buffer.length;
+    }
+
+    //% weight=100 blockId=setMCP block="Set MCP tool |name = %tool_name|command = %command|params = %params|block = %block|return = %have_return"
+    //% subcategory=AIModule tool_name.shadow=text command.shadow=text params.shadow=text
+    //% tool_name.defl=self.house.set_light_brightness command.defl="Call this tool when you want to set light brightness"
+    //% params.defl='[[set_light_brightness, int, 0, 255]]' block.defl=false have_return.defl=false
+    export function setMCP(tool_name: string, command: string, params: string, block: string, have_return: string) {
+        const message = { tool_name, command, params: params ? JSON.parse(params) : [], block, return: have_return };
+        buffer = Buffer.fromUTF8(JSON.stringify(message));
+        pins.i2cWriteBuffer(AIMODULE_ADDR, buffer);
+        basic.pause(50);
+    }
+
+    function sendAICommand(command: string, params: any) {
+        buffer = Buffer.fromUTF8(JSON.stringify({ command, params }));
+        pins.i2cWriteBuffer(AIMODULE_ADDR, buffer);
+    }
+
+    //% weight=95 blockId=sendStatus block="Send status %params to AIModule"
+    //% subcategory=AIModule blockGap=50
+    export function sendStatus(params: string) {
+        sendAICommand("status", params ? JSON.parse(params) : []);
+    }
+
+    //% weight=96 blockId=setVision block="Set Vision %params"
+    //% subcategory=AIModule
+    export function setVision(params: string) {
+        sendAICommand("vision", params);
+    }
+
+    //% weight=99 blockId=mcp_setting_finish block="MCP setting finish"
+    //% subcategory=AIModule
+    export function mcp_setting_finish() {
+        basic.pause(100);
+        sendAICommand("mcp_setting", "true");
+    }
+
+    //% weight=94 blockId=get_mcp_return block="Get MCP return"
+    //% subcategory=AIModule 
+    export function get_mcp_return(): string {
+        const temp = mcp_return;
+        mcp_return = "";
+        return temp;
+    }
+
+    //% weight=97 blockId=set_aimodule_sleep block="Set AIModule sleep"
+    //% subcategory=AIModule
+    export function set_aimodule_sleep() {
+        sendAICommand("sleep", "true");
+    }
+
+    //% weight=98 blockId=mcp_action_finish block="MCP action finish"
+    //% subcategory=AIModule
+    export function mcp_action_finish() {
+        sendAICommand("action_finish", "true");
+    }
+
+
+    /**
+        * Set the brightness of the strip. This flag only applies to future operation.
+        * @param brightness a measure of LED brightness in 0-255. eg: 255
+   */
     //% blockId="boardRGBsetBrightness" block="set board RGB light brightness %brightness"
     //% weight=66
     //% subcategory=LED
@@ -1175,4 +1328,5 @@ namespace dadabit {
         }
         return result;
     }
+
 }
