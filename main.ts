@@ -116,6 +116,221 @@ namespace dadabit {
         State_1 = 1
     }
 
+    export enum WORD_RESULT {
+        //% block="Going straight"
+        GO_STRAIGHT = 0x01,
+        //% block="Going backward"
+        GO_BACKWARD,
+        //% block="Turning left"
+        TURN_LEFT,
+        //% block="Turning right"
+        TURN_RIGHT,
+        //% block="Lean forward"
+        LEAN_FORWARD,
+        //% block="Lean back"
+        LEAN_BACK,
+        //% block="Lean left"
+        LEAN_LEFT,
+        //% block="Lean right"
+        LEAN_RIGHT,
+        //% block="Stop"
+        STOP,
+        //% block="Attention"
+        ATTENTION,
+        //% block="Get down"
+        GET_DOWN,
+        //% block="Sit down"
+        SIT_DOWN,
+        //% block="Speed up"
+        SPEED_UP,
+        //% block="Slow down"
+        SLOW_DOWN,
+        //% block="Raise"
+        EXECUTE_ACTION_ONE,
+        //% block="Lower
+        EXECUTE_ACTION_TWO,
+        //% block="Barks once"
+        EXECUTE_ACTION_THREE,
+        //% block="Turn on the light"
+        TURN_ON_THE_LIGHT,
+        //% block="Turn off the light"
+        TURN_OFF_THE_LIGHT,
+        //% block="Open the door"
+        OPEN_THE_DOOR,
+        //% block="Close the door"
+        CLOSE_THE_DOOR,
+        //% block="Turn on the water pump"
+        TURN_ON_THE_WATER_PUMP,
+        //% block="Turn off the water pump"
+        TURN_OFF_THE_WATER_PUMP,
+        //% block="Unfold the airing rack"
+        UNFOLD_THE_AIRING_RACK,
+        //% block="Fold the aring rack"
+        FOLD_THE_ARING_RACK,
+        //% block="Hello"
+        HELLO,
+        //% block="Introduce yourself"
+        INTRODUCE_YOURSELF,
+        //% block="Show a skill"
+        SHOW_A_SKIII,
+        //% block="March"
+        MARCH,
+        //% block="Shake head"
+        SHAKE_HEAD,
+        //% block="Dive forward"
+        DIVE_FORWARD,
+        //% block="Dive backward"
+        DIVE_BACKWARD,
+        //% block="Combat mode"
+        COMBAT_MODE,
+        //% block="Squat down"
+        SQUAT_DOWN,
+        //% block="Shake it off"
+        SHAKE_IT_OFF
+    }
+
+    export enum WORD_SPEAK_PLAY {
+        //% block="Recyclable waste"
+        RECYCLABLE_WASTE = 0x01,
+        //% block="Kitchen waster"
+        KITCHEN_WASTE,
+        //% block="Hazardous Waste"
+        HAZARDOUS_WASTE,
+        //% block="Other waster"
+        OTHER_WASTE,
+        //% block="Abstacle ahead"
+        ABSTACLE_AHEAD,
+        //% block="Parking completed"
+        PARKING,
+        //% block="Restart departure"
+        RESTART_DEPARTURE,
+        //% block="Left turn detected"
+        DETECT_LEFT_TURN,
+        //% block="Right turn detected"
+        DETECT_RIGHT_TURN,
+        //% block="Parking detected"
+        DETECT_PARKING,
+        //% block="Red light detected"
+        DETECT_RED_LIGHT,
+        //% block="Green light detected"
+        DETECT_GREEN_LIGHT,
+        //% block="U-turn detected"
+        DETECT_U_TURN,
+        //% block="Turn detected"
+        DETECT_TURN,
+        //% block="Hello welcome"
+        WELCOME_YOU
+    }
+
+    export enum WORD_CMD_PLAY {
+        //% block="Going straight"
+        GO_STRAIGHT = 0x01,
+        //% block="Going backward"
+        GO_BACKWARD,
+        //% block="Turning left"
+        TURN_LEFT,
+        //% block="Turning right"
+        TURN_RIGHT,
+        //% block="Lean forward"
+        LEAN_FORWARD,
+        //% block="Lean back"
+        LEAN_BACK,
+        //% block="Lean left"
+        LEAN_LEFT,
+        //% block="Lean right"
+        LEAN_RIGHT,
+        //% block="Copy that"
+        COPY_THAT,
+        //% block="Turn on the light"
+        TURN_ON_THE_LIGHT = 0x12,
+        //% block="Turn off the light"
+        TURN_OFF_THE_LIGHT,
+        //% block="The door is open"
+        OPEN_THE_DOOR,
+        //% block="The door is closed "
+        CLOSE_THE_DOOR,
+        //% block="Turn on the water pump"
+        TURN_ON_THE_WATER_PUMP,
+        //% block="Turn off the water pump"
+        TURN_OFF_THE_WATER_PUMP,
+        //% block="Unfold the airing rack"
+        UNFOLD_THE_AIRING_RACK,
+        //% block="Fold the airing rack"
+        FOLD_THE_ARING_RACK,
+        //% block="Hi"
+        HELLO,
+        //% block="Hello, i'm Hiwonder, and i can talk and dance."
+        INTRODUCE_YOURSELF
+    }
+
+    export enum VOICE_TYPE {
+        //% block="Speak"
+        SPEAK_TYPE = 0x00,
+        //% block="Command"
+        CMD_TYPE = 0xff
+    }
+
+    export enum WonderLLM_Mode {
+       //% block="Voice"
+       VOICE_MODE = 0x00,
+       //% block="Color recognition"
+       COLOR_MODE = 0x01,
+       //% block="Facial recognition"
+       FACIAL_MODE = 0x02
+    }
+
+    export enum WonderLLM_Data {
+        //% block="Center X"
+        CENTER_X = 0x00,
+        //% block="Center Y"
+        CENTER_Y = 0x01,
+        //% block="Width"
+        WIDTH = 0x02,
+        //% block="Height"
+        HEIGHT = 0x03
+    }
+
+    export enum WonderLLM_Color {
+        //% block="Red"
+        RED= 0x00,
+        //% block="Yellow"
+        YELLOW = 0x01,
+        //% block="Green"
+        GREEN = 0x02,
+        //% block="Blue"
+        BLUE = 0x03,
+        //% block="Purple"
+        PURPLE = 0x04
+    }
+
+    export enum WonderLLM_Color_ID {
+        //% block="1"
+        ONE = 0x01,
+        //% block="2"
+        TWO = 0x02,
+        //% block="3"
+        THREE = 0x03,
+        //% block="4"
+        FOUR = 0x04,
+        //% block="5"
+        FIVE = 0x05
+    }
+
+    export enum WonderLLM_Color_Threshold {
+        //% block="minimum hue(H)"
+        MIN_H = 0x00,
+        //% block="maximum hue(H)"
+        MAX_H = 0x01,
+        //% block="minimum saturation(S)"
+        MIN_S = 0x02,
+        //% block="maximum saturation(S)"
+        MAX_S = 0x03,
+        //% block="minimum brightness(V)"
+        MIN_V = 0x04,
+        //% block="maximum brightness(V)"
+        MAX_V = 0x05
+    }
+
     let rgbLight: RGBLight.LHRGBLight;
     let boardRgbLight: RGBLight.LHRGBLight;
 
@@ -275,6 +490,15 @@ namespace dadabit {
     export function color_sensor_init(port: iicPort) {
         InitColor();
         control.waitMicros(100);
+    }
+
+    /**
+     * WonderLLM initialization, please execute at boot time
+    */
+    //% weight=85 blockId=wonderllm_init block="Initialize WonderLLM at %port"
+    //% subcategory=Init
+    export function wonderllm_init(port: iicPort) {
+
     }
 
     /**
@@ -976,13 +1200,13 @@ namespace dadabit {
     }
 
     //% weight=93 blockId=get_mcp_setting_length block="Get the parameter length of the MCP setting(The length cannot exceed 1024)"
-    //% subcategory=AIModule
+    //% subcategory=WonderLLM-Online
     export function get_mcp_setting_length(): number {
         return buffer.length;
     }
 
     //% weight=100 blockId=setMCP block="Set MCP tool |name = %tool_name|command = %command|params = %params|block = %block|return = %have_return"
-    //% subcategory=AIModule tool_name.shadow=text command.shadow=text params.shadow=text
+    //% subcategory=WonderLLM-Online tool_name.shadow=text command.shadow=text params.shadow=text
     //% tool_name.defl=self.house.set_light_brightness command.defl="Call this tool when you want to set light brightness"
     //% params.defl='[[set_light_brightness, int, 0, 255]]' block.defl=false have_return.defl=false
     export function setMCP(tool_name: string, command: string, params: string, block: string, have_return: string) {
@@ -998,26 +1222,26 @@ namespace dadabit {
     }
 
     //% weight=95 blockId=sendStatus block="Send status %params to AIModule"
-    //% subcategory=AIModule blockGap=50
+    //% subcategory=WonderLLM-Online blockGap=50
     export function sendStatus(params: string) {
         sendAICommand("status", params ? JSON.parse(params) : []);
     }
 
     //% weight=96 blockId=setVision block="Set Vision %params"
-    //% subcategory=AIModule
+    //% subcategory=WonderLLM-Online
     export function setVision(params: string) {
         sendAICommand("vision", params);
     }
 
     //% weight=99 blockId=mcp_setting_finish block="MCP setting finish"
-    //% subcategory=AIModule
+    //% subcategory=WonderLLM-Online
     export function mcp_setting_finish() {
         basic.pause(100);
         sendAICommand("mcp_setting", "true");
     }
 
     //% weight=94 blockId=get_mcp_return block="Get MCP return"
-    //% subcategory=AIModule 
+    //% subcategory=WonderLLM-Online
     export function get_mcp_return(): string {
         const temp = mcp_return;
         mcp_return = "";
@@ -1025,15 +1249,276 @@ namespace dadabit {
     }
 
     //% weight=97 blockId=set_aimodule_sleep block="Set AIModule sleep"
-    //% subcategory=AIModule
+    //% subcategory=WonderLLM-Online
     export function set_aimodule_sleep() {
         sendAICommand("sleep", "true");
     }
 
     //% weight=98 blockId=mcp_action_finish block="MCP action finish"
-    //% subcategory=AIModule
+    //% subcategory=WonderLLM-Online
     export function mcp_action_finish() {
         sendAICommand("action_finish", "true");
+    }
+
+
+    const ASR_I2C_ADDR = 0x34
+    const ASR_RESULT_ADDR = 0x64
+    const ASR_SPEAK_ADDR = 0x6e
+    const ASR_CMDMAND = 0x00
+    const ASR_ANNOUNCER = 0xff
+
+    const FaceDetect_Reg = 0x20
+
+    const Reg_Mode_Write = 0x70
+    const Reg_Mode_Read = 0x71
+
+    const Reg_ColorThresh_0 = 0x80
+    const Reg_ColorThresh_1 = 0x81
+    const Reg_ColorThresh_2 = 0x82
+    const Reg_ColorThresh_3 = 0x83
+    const Reg_ColorThresh_4 = 0x84
+    const ColorThresh_Len = 6
+
+    const Color_num = 5
+    const Color0_Detect_Reg = 0x10
+    const Color1_Detect_Reg = 0x11
+    const Color2_Detect_Reg = 0x12
+    const Color3_Detect_Reg = 0x13
+    const Color4_Detect_Reg = 0x14
+
+    const Color_line_num = 4
+    const Color0_segment1_Detect_Reg = 0xA0
+    const Color0_segment2_Detect_Reg = 0xA1
+    const Color1_segment1_Detect_Reg = 0xA2
+    const Color1_segment2_Detect_Reg = 0xA3
+    const Color2_segment1_Detect_Reg = 0xA4
+    const Color2_segment2_Detect_Reg = 0xA5
+    const Color3_segment1_Detect_Reg = 0xA6
+    const Color3_segment2_Detect_Reg = 0xA7
+
+    function asr_i2Cwrite(cmd: number, id: number): number {
+        let buf = pins.createBuffer(3);
+        buf[0] = ASR_SPEAK_ADDR
+        buf[1] = cmd;
+        buf[2] = id;
+        let rvalue = pins.i2cWriteBuffer(ASR_I2C_ADDR, buf);
+        return rvalue;
+    }
+
+    function asr_i2Cread(): number {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, ASR_RESULT_ADDR, NumberFormat.UInt8BE)
+        let val = pins.i2cReadNumber(ASR_I2C_ADDR, NumberFormat.UInt8BE);
+        return val;
+    }
+
+    /**
+    * Set work mode
+    */
+    //% weight=100 blockId=setRecognitionMode block="Set %value work mode"
+    //% subcategory=WonderLLM-Offline
+    export function setRecognitionMode(value: WonderLLM_Mode) {
+        const buf = pins.createBuffer(2);
+        buf[0] = Reg_Mode_Write;
+        buf[1] = value;
+        pins.i2cWriteBuffer(ASR_I2C_ADDR, buf);
+    }
+
+    /**
+    * Current work mode
+    */
+    //% weight=98 blockId=getRecognitionMode block="Current work mode is %value ?"
+    //% subcategory=WonderLLM-Offline
+    export function getRecognitionMode(value: WonderLLM_Mode): Boolean {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, Reg_Mode_Read, NumberFormat.UInt8BE)
+        let val = pins.i2cReadNumber(ASR_I2C_ADDR, NumberFormat.UInt8BE);
+        return val == value
+    }
+    
+    /**
+     * Read recognize result
+    */
+    //% weight=96 blockId=readASRResult block="Read recognize result is %value"
+    //% subcategory=WonderLLM-Offline group=Voice
+    export function readASRResult(value: WORD_RESULT): Boolean {
+        let result = asr_i2Cread()
+        return (result == value)
+    }
+
+    /**
+    * Read recognize result world ID
+    */
+    //% weight=94 blockId=readASRResultID block="Read recognize result world ID"
+    //% subcategory=WonderLLM-Offline group=Voice
+    export function readASRResultID() {
+        return asr_i2Cread()
+    }
+
+    /**
+    * Play world
+    */
+    //% weight=92 blockId=playASRCmdWorld block="Play command world ID %value"
+    //% subcategory=WonderLLM-Offline group=Voice
+    export function playASRCmdWorld(value: WORD_CMD_PLAY) {
+        asr_i2Cwrite(ASR_CMDMAND, value)
+    }
+
+    /**
+    * Play world
+    */
+    //% weight=90 blockId=playASRSpeakWorld block="Play speak world ID %value"
+    //% subcategory=WonderLLM-Offline group=Voice
+    export function playASRSpeakWorld(value: WORD_SPEAK_PLAY) {
+        asr_i2Cwrite(ASR_ANNOUNCER, value)
+    }
+
+    /**
+    * Play world ID
+    * @param value eg: 1
+    */
+    //% weight=88 blockId=playASRWorldID block="Play world |type %vtype| ID %value"
+    //% subcategory=WonderLLM-Offline group=Voice
+    export function playASRWorldID(vtype: VOICE_TYPE, value: number) {
+        asr_i2Cwrite(vtype, value)
+    }
+
+
+    function decode_xywh_le(raw8: Buffer): Buffer
+    {
+        const buf = pins.createBuffer(4);
+        let x = raw8[0] | (raw8[1] << 8)
+        let y = raw8[2] | (raw8[3] << 8)
+        let w = raw8[4] | (raw8[5] << 8)
+        let h = raw8[6] | (raw8[7] << 8)
+        buf[0] = x;
+        buf[1] = y;
+        buf[2] = w;
+        buf[3] = h;
+        return buf
+    }
+
+
+    /**
+    * It has recognize humman face ?
+    */
+    //% weight=86 blockId=faceDetect block="It has detected humman face ?"
+    //% subcategory=WonderLLM-Offline group=Facial-Recognition
+    export function faceDetect(): Boolean {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, FaceDetect_Reg, NumberFormat.UInt8BE)
+        let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 8);
+        if (val)
+        {
+            let face_info = decode_xywh_le(val)
+            if (face_info[2] > 0)
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
+    }
+
+    /**
+    * Get detected humman face box parameters
+    */
+    //% weight=85 blockId=faceDetectParams block="Get humman face box %value"
+    //% subcategory=WonderLLM-Offline group=Facial-Recognition
+    export function faceDetectParams(value: WonderLLM_Data): number {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, FaceDetect_Reg, NumberFormat.UInt8BE)
+        let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 8);
+        if (!val)
+            return 0
+        let result = decode_xywh_le(val)
+        return result[value]
+    }
+    
+    // /**
+    //  * Get detected color parameters
+    // */
+    // //% weight=84 blockId=getColorParamsList block="Get detected color ID %value parameter list"
+    // //% subcategory=WonderLLM-Offline group=Color recognition
+    // export function getColorParamsList(value: WonderLLM_Color_ID): Buffer {
+    //     let reg = Color0_Detect_Reg + value
+    //     pins.i2cWriteNumber(ASR_I2C_ADDR, reg, NumberFormat.UInt8BE)
+    //     let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 8);
+    //     let color_info = decode_xywh_le(val)
+    //     return color_info
+    // }
+
+    /**
+     * The color ID of the largest recognized area
+    */
+    //% weight=82 blockId=getLargestColorID block="The color ID of the largest recognized area is %value"
+    //% subcategory=WonderLLM-Offline group=Color-Recognition
+    export function getLargestColorID(value: WonderLLM_Color_ID): Boolean {
+        let max_color = 0
+        let max_area = 0     
+
+        for (let i = 0; i < Color_num; i++)
+        {
+            pins.i2cWriteNumber(ASR_I2C_ADDR, Color0_Detect_Reg + i, NumberFormat.UInt8BE)
+            let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 8);
+            if (!val)
+                return false;
+            let color_info = decode_xywh_le(val)
+            let areaTemp
+            if (color_info[2] > 0)
+                areaTemp = color_info[2] * color_info[3]
+            else 
+                areaTemp = 0
+            if (areaTemp > max_area)
+            {
+                max_area = areaTemp
+                max_color = i + 1
+            }
+        }
+        serial.writeNumber(max_color)
+        serial.writeLine("")
+        return max_color == value
+    }
+
+    /**
+    * Get color parameter
+    */
+    //% weight=80 blockId=getColorParameter block="Get the color ID %value1 parameter box %value2"
+    //% subcategory=WonderLLM-Offline group=Color-Recognition
+    export function getColorParameter(value1: WonderLLM_Color_ID, value2: WonderLLM_Data): number {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, Color0_Detect_Reg + value1 - 1, NumberFormat.UInt8BE)
+        let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 8);
+        if (!val)
+            return 0;
+        let color_info = decode_xywh_le(val)
+        return color_info[value2]
+    }
+
+    /**
+    * Set color threshold parameter
+    */
+    //% weight=79 blockId=setColorThreshold block="Set the color ID %value1 threshold value, minimum hue(H) is %value2, maximum hue(H) is %value3, minimum saturation(S) is %value4, maximum saturation(S) is %value5, minimum brightness(V) is %value6, maximum brightness(V) is %value7."
+    //% subcategory=WonderLLM-Offline group=Color-Recognition
+    export function setColorThreshold(value1: WonderLLM_Color_ID, value2: number, value3: number, value4: number, value5: number, value6: number, value7: number) {
+        let reg = Reg_ColorThresh_0 + value1 - 1
+        const buf = pins.createBuffer(7);
+        buf[0] = reg
+        buf[1] = value2
+        buf[2] = value3
+        buf[3] = value4
+        buf[4] = value5
+        buf[5] = value6
+        buf[6] = value7
+        pins.i2cWriteBuffer(ASR_I2C_ADDR, buf);
+    }
+
+    /**
+    * Get color threshold parameter
+    */
+    //% weight=78 blockId=getColorThreshold block="Get the color ID %value1 threshold value %value2"
+    //% subcategory=WonderLLM-Offline group=Color-Recognition
+    export function getColorThreshold(value1: WonderLLM_Color_ID, value2: WonderLLM_Color_Threshold): number {
+        pins.i2cWriteNumber(ASR_I2C_ADDR, Reg_ColorThresh_0 + value1 - 1, NumberFormat.UInt8BE)
+        let val = pins.i2cReadBuffer(ASR_I2C_ADDR, 6);
+        if (!val)
+            return 0;
+        return val[value2]
     }
 
 
@@ -1041,7 +1526,7 @@ namespace dadabit {
         * Set the brightness of the strip. This flag only applies to future operation.
         * @param brightness a measure of LED brightness in 0-255. eg: 255
    */
-    //% blockId="boardRGBsetBrightness" block="set board RGB light brightness %brightness"
+    //% blockId="boardRGBsetBrightness" block="Set board RGB light brightness %brightness"
     //% weight=66
     //% subcategory=LED
     export function boardRGBsetBrightness(brightness: number): void {
@@ -1138,6 +1623,8 @@ namespace dadabit {
     export function clearLight() {
         rgbLight.clear();
     }
+
+
 
     let WIFI_MODE_ADRESS = 0x69
 
